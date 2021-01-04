@@ -1,5 +1,6 @@
-const soma = (a, b) =>{
-    return a + b
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-console.log(soma(1, 3));
+import App from './App';
+
+ReactDOM.render(<App />, document.querySelector('#app'));
