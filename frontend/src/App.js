@@ -18,8 +18,17 @@ function App(){
         })
     }, [projects])
 
-    function handleAddProject() {
-        setProjects([...projects, `Novo projeto ${Date.now()}`]);
+    async function handleAddProject() {
+        // setProjects([...projects, `Novo projeto ${Date.now()}`]);
+
+        const response = await api.post('/projects', {
+            title: "Front end com ReactJS",
+            owner: "Denys Maiolli"
+        });
+
+        const project = response.data
+
+        setProjects([...projects, project])
     }
 
     return (
