@@ -6,5 +6,11 @@
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.1"
-  }
+  },
+  "name": "bootcamp-react-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dmaiolli/bootcamp-react-node.git",
+  "author": "Denys Lonkovski Maiolli <denysmaiolli@hotmail.com>",
+  "license": "MIT"
 }
