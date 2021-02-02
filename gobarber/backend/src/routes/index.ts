@@ -7,11 +7,11 @@ routes.get('/', (request, response) =>
 );
 
 routes.post('/', (request, response) => {
-  const { name, email } = request.body;
+  const { provider, date } = request.body;
 
   const user = {
-    name,
-    email,
+    provider,
+    date,
   };
 
   return response.json(user);
