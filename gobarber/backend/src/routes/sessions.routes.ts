@@ -11,7 +11,7 @@ sessionsRouter.post('/', async (request, response) => {
     const authenticateUser = new AuthenticateUserService();
 
     // user vindo do retorno do service
-    const { user } = await authenticateUser.execute({
+    const { user, token } = await authenticateUser.execute({
       email,
       password,
     });
@@ -20,7 +20,7 @@ sessionsRouter.post('/', async (request, response) => {
 
     // Nunca pegar o resultado de um service e retornar do mesmo jeito, ainda mais se for uma variável tão genérica como "response", pois não sabemos oque estamos retornando pro usuário
 
-    return response.json({ user });
+    return response.json({ user, token });
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
