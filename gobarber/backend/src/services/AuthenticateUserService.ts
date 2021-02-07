@@ -1,8 +1,10 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs'; // Compara uma senha criptografada com uma não criptografada e ve se elas batem
 import { sign, verify } from 'jsonwebtoken'; //
+import authConfig from '../config/auth';
 
 import User from '../models/User';
+import auth from '../config/auth';
 
 interface Request {
   email: string;
@@ -41,9 +43,11 @@ class AuthenticateUserService {
     // 2º Parâmetro = Chave secreta
     // 3º Parâmetro = Algumas configurações
 
-    const token = sign({}, '21d651d6a534b6d659a2370ca56aceb3', {
+    const { secret, expiresIn } = authConfig.jwt;
+
+    const token = sign({}, secret, {
       subject: user.id, // A qual usuários estamos nos "referindo"
-      expiresIn: '1d', // Quanto tempo dura esse token
+      expiresIn, // Quanto tempo dura esse token
     });
 
     return {

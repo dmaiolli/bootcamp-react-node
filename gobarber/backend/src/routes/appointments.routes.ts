@@ -7,14 +7,23 @@ import { parseISO } from 'date-fns';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentService from '../services/CreateAppointmentService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const appointmentsRouter = Router();
 
-appointmentsRouter.get('/', async (request, response) => {
-  const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-  const appointments = await appointmentsRepository.find();
+// Como todas nossas rotas vão precisar da autenticação, podemos fazer da seguinte maneira
+appointmentsRouter.use(ensureAuthenticated);
 
-  return response.json(appointments);
-});
+// Caso eu quisesse passar em apenas uma rota seria dessa maneira
+appointmentsRouter.get(
+  '/',
+  /* ensureAuthenticated, */ async (request, response) => {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+    const appointments = await appointmentsRepository.find();
+
+    return response.json(appointments);
+  },
+);
 
 appointmentsRouter.post('/', async (request, response) => {
   try {
