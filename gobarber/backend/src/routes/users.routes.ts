@@ -5,6 +5,7 @@ import multer from 'multer';
 import uploadConfig from '../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
@@ -40,9 +41,21 @@ usersRouter.patch(
   upload.single('avatar'),
   async (request, response) => {
     // Para alterar o avatar do nosso usuário, precisamos que ele esteja autenticado, para isso o middleware ensureAuthenticated
-    console.log(request.file);
 
-    return response.json({ message: 'ok' });
+    try {
+      const updateUserAvatar = new UpdateUserAvatarService();
+
+      const user = await updateUserAvatar.execute({
+        user_id: request.user.id,
+        avatarFilename: request.file.filename,
+      });
+
+      delete user.password;
+
+      return response.json(user);
+    } catch (err) {
+      return response.status(400).json({ message: err.message });
+    }
   },
 );
 
