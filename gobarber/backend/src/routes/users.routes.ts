@@ -13,24 +13,20 @@ const usersRouter = Router();
 const upload = multer(uploadConfig);
 
 usersRouter.post('/', async (request, response) => {
-  try {
-    const { name, email, password } = request.body;
+  const { name, email, password } = request.body;
 
-    const createUser = new CreateUserService();
+  const createUser = new CreateUserService();
 
-    const user = await createUser.execute({
-      // await pois nosso método execute é assíncrono
-      name,
-      email,
-      password,
-    });
+  const user = await createUser.execute({
+    // await pois nosso método execute é assíncrono
+    name,
+    email,
+    password,
+  });
 
-    delete user.password;
+  delete user.password;
 
-    return response.json(user);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(user);
 });
 
 // Usamos o patch quando queremos atualizar apenas uma informação, do contrário usariamos o método put
@@ -41,21 +37,16 @@ usersRouter.patch(
   upload.single('avatar'),
   async (request, response) => {
     // Para alterar o avatar do nosso usuário, precisamos que ele esteja autenticado, para isso o middleware ensureAuthenticated
+    const updateUserAvatar = new UpdateUserAvatarService();
 
-    try {
-      const updateUserAvatar = new UpdateUserAvatarService();
+    const user = await updateUserAvatar.execute({
+      user_id: request.user.id,
+      avatarFilename: request.file.filename,
+    });
 
-      const user = await updateUserAvatar.execute({
-        user_id: request.user.id,
-        avatarFilename: request.file.filename,
-      });
+    delete user.password;
 
-      delete user.password;
-
-      return response.json(user);
-    } catch (err) {
-      return response.status(400).json({ message: err.message });
-    }
+    return response.json(user);
   },
 );
 
